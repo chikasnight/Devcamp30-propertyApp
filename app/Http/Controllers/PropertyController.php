@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
-use str;
+use Str;
 
 class PropertyController extends Controller
 {
@@ -19,10 +19,10 @@ class PropertyController extends Controller
 
         ]);
         //ad property to db
-       $newProperty=propery::create([
+       $newProperty=property::create([
             'user_id' => 1,
             'name' => $request->name,
-            'slup' =>str::slug($request->name),
+            'slug' => Str::slug($request->name),
             'state' => $request->state,
             'type' => $request->type, 
             'bedroom' => $request->bedroom,
