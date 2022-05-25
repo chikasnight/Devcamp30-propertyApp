@@ -15,17 +15,17 @@ class PropertyController extends Controller
             'name'=>['required','min:5','unique:properties,name'],
             'state'=>['required'],
             'type'=>['required'],
-            'bedroom'=>['required'],
+            'bedrooms'=>['required'],
 
         ]);
         //ad property to db
-       $newProperty=property::create([
+       $newProperty= Property::create([
             'user_id' => 1,
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'state' => $request->state,
             'type' => $request->type, 
-            'bedroom' => $request->bedroom,
+            'bedrooms' => $request->bedrooms,
        ]);
         //return success
         return response()->json([
@@ -34,8 +34,69 @@ class PropertyController extends Controller
             'data' => $newProperty,
         ]);
     }
-    public function getAllProperties(){}
-    public function getProperty(){}
-    public function updateProperty(){}
-    public function deleteProperty(){}
+    public function getAllProperties(){
+        $postAll = Property::all();
+
+        return response() ->json([
+            'success'=> true,
+            'data'  => $postAll
+            
+        ]);
+    }
+
+    public function getProperty(Request $request, $propertyId){
+        $property = Property::find($propertyId);
+        if(!$prperty) {
+            return response() ->json([
+                'success' => false,
+                'message' => 'property not found'
+            ]);
+        }
+
+        return response() ->json([
+            'success'=> true,
+            'message'  => 'property found',
+            'data'   => $property
+        ]);
+    }
+    public function updateProperty(Request $request, $propertyId){
+        $request->validate([
+            'name'=>['required','min:5','unique:properties,name', $propertyId],
+            'state'=>['required'],
+            'type'=>['required'],
+            'bedrooms'=>['required'],
+
+        ]);
+
+        $property = Property::find($propertyId);
+        if(!$prperty) {
+            return response() ->json([
+                'success' => false,
+                'message' => 'property not found'
+            ]);
+        }
+
+        $property->name = $request->name;
+        $property->slug = Str::slug($request->name);
+        $property->state = $request->state;
+        $property->type = $request->type;
+        $property->bedrooms = $request->bedrooms;
+        $property->save();
+    }
+    public function deleteProperty( $propertyId){
+
+        $property = Property::find($propertyId);
+        if(!$prperty) {
+            return response() ->json([
+                'success' => false,
+                'message' => 'property not found'
+            ]);
+        }
+        $property-> delete();
+
+        return response() ->json([
+            'success' => true,
+            'message' => 'property deleted'
+        ]); 
+    }
 }

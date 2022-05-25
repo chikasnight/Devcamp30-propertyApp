@@ -15,6 +15,6 @@ class property extends Model
         'slug',
         'state',
         'type',
-        'bedroom',
+        'bedrooms',
     ];
 }
