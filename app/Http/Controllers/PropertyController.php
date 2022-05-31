@@ -11,7 +11,7 @@ class PropertyController extends Controller
     //adding property to db table
     public function createProperty(Request $request){
         //validate request body
-        $request->validate([
+          $request->validate([
             'name'=>['required','min:5','unique:properties,name'],
             'state'=>['required'],
             'type'=>['required'],
@@ -20,7 +20,7 @@ class PropertyController extends Controller
         ]);
         //ad property to db
        $newProperty= Property::create([
-            'user_id' => 1,
+            'user_id' => auth()->id(),
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'state' => $request->state,
