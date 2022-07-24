@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Exceptions;
-
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\AuthenticationException;
+use Illuminate\Database\Eloquent\MedelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +39,39 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+    public function render($request, Throwable $exception){
+        if ($exception instanceof AuthorizationException && $request->expectsjson()){
+            return response()->json([
+                'success'=>false,
+                'message'=>$exception->getMessage()
+            ]);
+        }
+        if ($exception instanceof MedelNotFoundException && $request->expectsjson()){
+
+            return response()->json([
+                'success'=>false,
+                'message'=>'you are not authorized to access this resource'
+            ]);
+        };
+        if ($exception instanceof AuthenticationException && $request->expectsjson()){
+
+            return response()->json([
+                'success'=>false,
+                'message'=>$exception->getMessage(),
+            ]);
+        }
+
+        if ($exception instanceof ValidationException && $request->expectsjson()){
+
+            return response()->json([
+                'success'=>false,
+                'message'=>$exception->getMessage(),
+                'ValidationErrors'=>$exception->errors()
+            ]);
+        }
+
+        return parent::render($request, $exception);
+
     }
 }

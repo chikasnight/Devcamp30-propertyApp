@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug');
             $table->string('state');
-            $table->string('type');
+            //$table->string('type');
+            $table->string('type','buy','rent','shortlet');
             $table->string('bedrooms');
             $table->timestamps();
 

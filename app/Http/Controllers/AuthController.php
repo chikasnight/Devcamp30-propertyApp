@@ -47,7 +47,7 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         
         
-        if(!$user || Hash::check($request->password, $user->password)){
+        if(!$user || !Hash::check($request->password, $user->password)){
             return response()->json([
                 'success'=> false,
                 'message'=>'incorrect email or password'
@@ -75,8 +75,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        $user = auth('sanctum')->id()
-        ($user->tokens()-> delete());
+        auth('sanctum')->user()->tokens()->delete();
 
         return response()->json([
             'success'=> true,
@@ -88,10 +87,19 @@ class AuthController extends Controller
     public function updatePassword(Request $request){
         $request->validate([
             'current_password'=>['required', new CheckPassword()],
-            'new_password'=>['required', 'confirmed'],
+            'new_password'=>['required',/*new CheckIfNewPassMatchWithOld()*/ 'confirmed']
         ]);
 
         $user= auth('sanctum')->user();
+        if( Hash::check($request->new_password, $user->password)){
+            return response()->json([
+                'success'=> false,
+                'message'=>'password matches with current password',
+                
+            ]);
+
+        }
+
         $user ->update(['password'=> Hash::make($request->new_password)]);
 
         
@@ -105,7 +113,8 @@ class AuthController extends Controller
         
         return response()->json([
             'success'=> true,
-            'message'=>'password updated'
+            'message'=>'password updated',
+            'data' =>['token'=> $token]
         ]);
     } 
     

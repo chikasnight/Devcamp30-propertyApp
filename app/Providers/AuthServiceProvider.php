@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use App\Nodels\Property;
+use App\Policies\PropertyPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,6 +15,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Property::class=> PropertyPolicy::class,
+         
     ];
 
     /**
