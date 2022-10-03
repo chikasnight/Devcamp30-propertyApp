@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('state');
             //$table->string('type');
-            $table->string('type','buy','rent','shortlet');
+            $table->enum('type',['buy','rent','shortlet']);
             $table->string('bedrooms');
             $table->timestamps();
 

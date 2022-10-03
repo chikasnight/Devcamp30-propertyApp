@@ -33,9 +33,9 @@ class UploadImage implements ShouldQueue
      */
     public function handle()
     {
-        $disk = $this->properties->disk;
+        $disk = $this->property->disk;
         //Log::info("Disk: " . $disk);
-        $imageName = $this->properties->image;
+        $imageName = $this->property->image;
         $original_file = storage_path() . '/uploads/original/' . $imageName;
 
         try {
@@ -68,7 +68,7 @@ class UploadImage implements ShouldQueue
             }
 
             // update database record with success flag
-            $this->properties->update([
+            $this->property->update([
                 'upload_successful' => true
             ]);
         } catch (Exception $e) {

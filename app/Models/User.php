@@ -42,7 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
-    public function galleries(){
-        return $this->hasMany(Gallery::class);
+    public function properties(){
+        return $this->hasMany(Property::class);
     }
 }

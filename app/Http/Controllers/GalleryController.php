@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\UploadImageToGallery;
-use\App\Models\Gallery;
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
@@ -28,7 +28,7 @@ class GalleryController extends Controller
         $tmp = $image->storeAs('uploads/gallery', $filename, 'tmp');
 
         $galleryImage = Gallery::create([
-            'property_id'=>$property->id,
+            'user_id'=>auth()->id(),
             'image'=> $filename,
         ]);
         

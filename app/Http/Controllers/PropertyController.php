@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Property;
 use App\Http\Resources\PropertyResource;
 
-use App\Models\UploadImage;
+use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use Str;
 use Illuminate\Support\Facades\Storage;

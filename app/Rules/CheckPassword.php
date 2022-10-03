@@ -28,7 +28,7 @@ class CheckPassword implements Rule
     {
         /*get current password and compare with the password passed into the request */
         $currentPassword=auth('sanctum') ->user()-> password;
-        return Hash::check($value, $currentPassword);
+        return !Hash::check($value, $currentPassword);
 
     }
 
